@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motosur - Tu tienda de motos</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; scroll-behavior:smooth;}
+body { background-color:#f4f4f4; color:#222; }
+
+/* --- HEADER --- */
+header {
+  position:relative;
+  height:85vh;
+  display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+  overflow:hidden;
+}
+header video { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+header::after { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.6); z-index:1; }
+header .contenido-header { position:relative; z-index:2; animation:fadeIn 1.5s ease-in-out; }
+header h1 { font-size:3.5em; color:#fff; letter-spacing:2px; animation:slideDown 1s ease forwards;}
+header p { font-size:1.3em; color:#fff; margin-bottom:25px; animation:slideUp 1s ease forwards 0.5s;}
+header a button { background-color:#e60000; color:#fff; border:none; padding:15px 25px; border-radius:8px; cursor:pointer; font-size:1.1em; transition:0.3s;}
+header a button:hover { background-color:#b50000; transform:scale(1.05); }
+
+/* --- MENU --- */
+nav { position:sticky; top:0; background-color:#111; display:flex; justify-content:center; gap:30px; padding:15px 0; z-index:1000; }
+nav a { color:white; text-decoration:none; font-weight:600; transition:0.3s; }
+nav a:hover { color:#e60000; transform:scale(1.1); }
+
+/* --- SECCIONES --- */
+section { padding:70px 20px; max-width:1200px; margin:auto; animation:fadeInUp 0.8s ease; }
+h2 { color:#e60000; margin-bottom:25px; text-align:center; font-size:2.2em; }
+p { line-height:1.7; font-size:1.1em; color:#333; }
+
+/* --- QUIÉNES SOMOS --- */
+#quienes { background:#fff; padding:60px 30px; max-width:1000px; margin:60px auto; text-align:left; }
+#quienes h2 { text-align:center; margin-bottom:40px; }
+#quienes p { font-size:1.15em; line-height:1.8; }
+
+/* --- MODELOS --- */
+#modelos { background:#f8f8f8; }
+.modelos { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; }
+.moto { background:white; border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.15); overflow:hidden; width:300px; transition:transform 0.3s, box-shadow 0.3s; cursor:pointer; position:relative;}
+.moto:hover { transform:translateY(-8px); box-shadow:0 15px 35px rgba(0,0,0,0.3);}
+.moto img { width:100%; height:200px; object-fit:cover; border-bottom:1px solid #eee; cursor:pointer; }
+.moto-content { padding:20px; text-align:center; }
+.moto-content h3 { font-size:1.4em; margin-bottom:10px; color:#e60000; }
+.moto-content p { font-size:1em; margin-bottom:10px; }
+.moto-content button { padding:10px 15px; font-size:1em; border-radius:5px; cursor:pointer; }
+
+/* --- MODAL IMAGEN GRANDE --- */
+#modal-imagen { display:none; position:fixed; z-index:3000; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); justify-content:center; align-items:center; }
+#modal-imagen img { max-width:90%; max-height:90%; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+#modal-imagen .cerrar-img { position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer; }
+
+/* --- PROMOCIONES ANIMADAS --- */
+#promos { background:#fff; text-align:center; }
+#promos .combo-btn {
+  background-color:#e60000; color:white; padding:20px 40px; border:none; border-radius:50px; font-size:1.5em;
+  cursor:pointer; transition:0.3s; margin-bottom:40px;
+}
+#promos .combo-btn:hover { transform:scale(1.1); background-color:#b50000; }
+.burbujas { display:flex; justify-content:center; flex-wrap:wrap; gap:30px; opacity:0; transform:scale(0); transition:0.5s; margin-top:20px; }
+.burbuja {
+  width:120px; height:120px; border-radius:50%; background:#f8f8f8; display:flex; flex-direction:column; justify-content:center; align-items:center;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2); transition:0.4s;
+}
+.burbuja img { width:50px; margin-bottom:10px; }
+.burbuja p { font-size:0.95em; text-align:center; color:#333; }
+.burbujas.active { opacity:1; transform:scale(1); }
+
+/* --- CONTACTO --- */
+#contacto { position:relative; text-align:center; padding:80px 20px; color:#fff; background: url('imagenes/fondo1.jpg') no-repeat center center/cover; }
+#contacto h2, #contacto p, #contacto a, #contacto span, #contacto li { 
+  color:#fff; 
+  text-shadow:2px 2px 8px rgba(0,0,0,0.6); 
+}
+
+/* --- LOGOS INTERACTIVOS --- */
+.logos-interactivos { display:flex; justify-content:center; flex-wrap:wrap; gap:30px; margin-top:40px; }
+.logo-circle { width:100px; height:100px; border-radius:50%; display:flex; justify-content:center; align-items:center; background:white; transition:0.4s; box-shadow:0 5px 15px rgba(0,0,0,0.2); cursor:pointer; }
+.logo-circle img { width:70%; transition:0.4s; }
+.logo-circle:hover { transform:scale(1.4); box-shadow:0 10px 25px rgb(228, 226, 226); }
+
+/* --- FOOTER --- */
+footer { background-color:#111; color:white; text-align:center; padding:25px; margin-top:30px; font-size:1em; }
+
+/* --- MODALES DE CARACTERÍSTICAS --- */
+.modal { display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); justify-content:center; align-items:center; }
+.modal-content { background:white; border-radius:15px; padding:35px; max-width:550px; text-align:left; position:relative; animation:fadeInModal 0.4s ease; }
+.close-btn { position:absolute; top:15px; right:20px; font-size:24px; cursor:pointer; color:#e60000; }
+
+/* --- ANIMACIONES --- */
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes fadeInUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+@keyframes fadeInModal { from{opacity:0; transform:scale(0.9);} to{opacity:1; transform:scale(1);} }
+@keyframes slideDown { from{opacity:0; transform:translateY(-50px);} to{opacity:1; transform:translateY(0);} }
+@keyframes slideUp { from{opacity:0; transform:translateY(50px);} to{opacity:1; transform:translateY(0);} }
+
+/* --- RESPONSIVE --- */
+@media(max-width:768px){
+  .modelos { flex-direction:column; align-items:center; }
+  .logos-interactivos { gap:20px; }
+  .logo-circle { width:80px; height:80px; }
+  .burbuja { width:90px; height:90px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="inicio">
+  <video autoplay muted loop playsinline>
+    <source src="videos/moto.mp4" type="video/mp4">
+  </video>
+  <div class="contenido-header">
+    <h1>MOTOSUR</h1>
+    <p>Pasión por la velocidad, confianza en cada rueda 🏍️</p>
+    <a href="#modelos"><button>Ver Modelos</button></a>
+  </div>
+</header>
+
+<!-- MENU -->
+<nav>
+  <a href="#inicio">Inicio</a>
+  <a href="#quienes">Quiénes Somos</a>
+  <a href="#modelos">Modelos</a>
+  <a href="#promos">Promociones</a>
+  <a href="#contacto">Contacto</a>
+</nav>
+
+<!-- QUIÉNES SOMOS -->
+<section id="quienes">
+  <h2>Quiénes Somos</h2>
+  <p>En <b>Motosur</b> "Concesionaria de motos en Machala desde 2007 🏍️. Experiencia, calidad y el mejor servicio para tu pasión sobre dos ruedas 🔥."</p>
+</section>
+
+<!-- MODELOS -->
+<section id="modelos">
+  <h2>Modelos Disponibles</h2>
+  <div class="modelos">
+    <div class="moto">
+      <img src="imagenes/FEROCE250.png" alt="Moto Daytona Feroce 250" onclick="abrirImagen(this.src)">
+      <div class="moto-content">
+        <h3>Daytona Feroce 250</h3>
+        <p>Motor 250cc, frenos de disco, estilo deportivo.</p>
+        <button onclick="abrirModal('daytona')">Ver características</button>
+      </div>
+    </div>
+    <div class="moto">
+      <img src="imagenes/cr250.png" alt="Moto Loncin CR250" onclick="abrirImagen(this.src)">
+      <div class="moto-content">
+        <h3>Loncin CR250 R2</h3>
+        <p>Motor 250cc, refrigeración por aceite, ideal para ciudad y ruta.</p>
+        <button onclick="abrirModal('loncin')">Ver características</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL IMAGEN GRANDE -->
+<div id="modal-imagen">
+  <span class="cerrar-img" onclick="cerrarImagen()">&times;</span>
+  <img src="" alt="Moto Ampliada">
+</div>
+
+<!-- PROMOCIONES -->
+<section id="promos">
+  <h2>Promociones</h2>
+  <button class="combo-btn">Combo Motosur</button>
+  <div class="burbujas">
+    <div class="burbuja"><img src="imagenes/Matrícula1.png" alt=""><p>Matrícula Gratis</p></div>
+    <div class="burbuja"><img src="imagenes/casco.png" alt=""><p>Casco Homologado</p></div>
+    <div class="burbuja"><img src="imagenes/aceite.png" alt=""><p>Aceite</p></div>
+    <div class="burbuja"><img src="imagenes/reajuste.png" alt=""><p>Reajuste</p></div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <h2>Contáctanos</h2>
+  <p>📍 SANTA ROSA ENTRE SUCRE Y 25 DE JUNIO, Machala-Ecuador</p>
+  <p>📞 0997944818</p>
+  <p>📧 motosurmachala@hotmail.com</p>
+
+  <div class="logos-interactivos">
+    <div class="logo-circle"><img src="imagenes/daytona1.png" alt="Honda"></div>
+    <div class="logo-circle"><img src="imagenes/HONDA.png" alt="Yamaha"></div>
+    <div class="logo-circle"><img src="imagenes/LONCIN.png" alt="Suzuki"></div>
+    <div class="logo-circle"><img src="imagenes/SOIN.png" alt="KTM"></div>
+    <div class="logo-circle"><img src="imagenes/yamaha.png" alt="Bajaj"></div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Motosur. Todos los derechos reservados.</p>
+</footer>
+
+<!-- MODALES DE CARACTERÍSTICAS -->
+<div id="modal-daytona" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="cerrarModal('daytona')">&times;</span>
+    <h3>Daytona Feroce 250</h3>
+    <ul>
+      <li>Motor: 250cc, monocilíndrico, 4 tiempos.</li>
+      <li>Refrigeración: Aire forzado.</li>
+      <li>Transmisión: 6 velocidades.</li>
+      <li>Frenos: Disco delantero y trasero.</li>
+      <li>Estilo: Naked deportivo.</li>
+    </ul>
+  </div>
+</div>
+
+<div id="modal-loncin" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="cerrarModal('loncin')">&times;</span>
+    <h3>Loncin CR250 R2</h3>
+    <ul>
+      <li>Motor: 250cc, monocilíndrico, 4 tiempos.</li>
+      <li>Refrigeración: Radiador de aceite.</li>
+      <li>Suspensión: Invertida delantera / Monoshock trasero.</li>
+      <li>Frenos: Doble disco delantero.</li>
+      <li>Panel digital y diseño agresivo.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// Modales de características
+function abrirModal(modelo){ document.getElementById('modal-'+modelo).style.display='flex'; }
+function cerrarModal(modelo){ document.getElementById('modal-'+modelo).style.display='none'; }
+window.onclick=function(e){ document.querySelectorAll('.modal').forEach(m=>{ if(e.target===m)m.style.display='none'; }); }
+
+// Modal de imagen grande
+function abrirImagen(src){
+  const modal = document.getElementById('modal-imagen');
+  modal.style.display = 'flex';
+  modal.querySelector('img').src = src;
+}
+function cerrarImagen(){
+  document.getElementById('modal-imagen').style.display = 'none';
+}
+
+// Combo Promociones
+const comboBtn = document.querySelector('.combo-btn');
+const burbujas = document.querySelector('.burbujas');
+comboBtn.addEventListener('click', ()=>{
+  burbujas.classList.toggle('active');
+});
+</script>
+</body>
+</html>
